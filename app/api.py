@@ -1,16 +1,10 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import Optional, List, Dict
 
-
-class PredictRequest(BaseModel):
-    features: Dict[str, float]
-
-
-class ModelResponse(BaseModel):
-    predictions: Optional[List[Dict[str, float]]]
-    error: Optional[str]
-
+from fastapi import FastAPI, UploadFile, File
+import uvicorn
+import os
+import prediction as pred
+import training
+from data_structures import ModelResponse, PredictRequest, ModelName, TrainResponse, TrainRequest
 
 app = FastAPI()
 
@@ -29,5 +23,31 @@ async def explain_api() -> ModelResponse:
 
 @app.post("/predict")
 async def get_model_predictions(request: PredictRequest) -> ModelResponse:
-    pass
-    # TODO  YOUR CODE HERE
+    print("Got Request: {0}".format(request))
+
+    if not pred.models_loaded:
+        return ModelResponse(
+            error="The models couldn't be loaded properly. Please consider retraining and saving the models")
+
+    model_prediction = pred.predict(request)
+    return ModelResponse(error="Hit the 'predict' function")
+
+
+@app.post("/train")
+async def train_model(model_name: ModelName, data: UploadFile = File(...)) -> TrainResponse:
+    if not os.path.exists(training.base_address):
+        os.mkdir(training.base_address)
+
+    contents = await data.read()
+
+    f = open(os.path.join(training.base_address, data.filename), "wb")
+    f.write(contents)
+    f.close()
+
+    training.train_specific_model(f.name, model_name)
+
+    return TrainResponse(accuracy="")
+
+
+if __name__ == "__main__":
+    uvicorn.run("api:app", host="0.0.0.0", port=8000)
