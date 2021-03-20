@@ -14,6 +14,7 @@ class ModelResponse(BaseModel):
 
 app = FastAPI()
 
+
 @app.get("/", response_model=ModelResponse)
 async def root() -> ModelResponse:
     return ModelResponse(error="This is a test endpoint.")
@@ -28,5 +29,5 @@ async def explain_api() -> ModelResponse:
 
 @app.post("/predict")
 async def get_model_predictions(request: PredictRequest) -> ModelResponse:
-    #TODO  YOUR CODE HERE
-
+    pass
+    # TODO  YOUR CODE HERE
