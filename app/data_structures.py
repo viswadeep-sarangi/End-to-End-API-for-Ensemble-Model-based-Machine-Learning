@@ -21,7 +21,8 @@ class TrainRequest(BaseModel):
 
 class TrainResponse(BaseModel):
     accuracy: str
-    model_hash_id: Optional[str]
+    unique_model_name: Optional[str]
+    details: Optional[str]
 
 
 class ModelName(str, Enum):

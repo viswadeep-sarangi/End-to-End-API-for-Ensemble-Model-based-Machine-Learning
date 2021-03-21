@@ -1,29 +1,64 @@
 import numpy as np
 import os
-import pickle
+from numpy.typing import ArrayLike
 from typing import Any, List, Dict
 from sklearn.base import ClassifierMixin
 from api import PredictRequest
+from train import save_model, train_model
+
+global ensemble_models
+
+feature_names = ['age','anaemia','creatinine_phosphokinase','diabetes','ejection_fraction','high_blood_pressure','platelets','serum_creatinine','serum_sodium','sex','smoking','time']
+
+def load_ensemble_models(base_path='./models/', filename='ensemble_models'):
+    models_file = save_model.load_ensemble_models_file()
+
+    if models_file is None:
+        train_model.train_all_models('./heart_failure_clinical_records_dataset.csv')
+        models_file = save_model.load_ensemble_models_file()
+
+    print("Models:{0}".format(models_file))
+    models_loaded, models = load_models(model_dict=models_file)
+
+    global ensemble_models
+    if models_loaded:
+        ensemble_models = models
+    else:
+        ensemble_models = None
 
 
-def load_models(base_path='./models/') -> (bool, List[str], List[ClassifierMixin]):
-    classifiers_filename = os.path.join(base_path, 'Top10Classifiers1')
-    if not os.path.isfile(classifiers_filename):
-        return False, None, None
+def load_models(model_dict: Dict[str, str], base_path='./models/') -> (bool, Dict[str, ClassifierMixin]):
+    models = {}
+    for (key, value) in model_dict.items():
+        model_path = os.path.join(base_path, value)
+        _model = np.load(model_path, allow_pickle=True)
+        models[key] = _model
 
-    top_10_classifiers = np.load(classifiers_filename)
-    model_list = []
-    print(top_10_classifiers)
-    for (accu, model_desc, model_name) in top_10_classifiers:
-        model_path = os.path.join(base_path, model_name)
-        if not os.path.isfile(model_path):
-            return False, None, None
-        model_list.append(pickle.load(open(model_path, 'rb')))
-    return True, top_10_classifiers[:, 1], model_list
+    return True, models
 
 
-(models_loaded, models_names, models) = load_models()
+def predict(features: PredictRequest) -> (bool, List[Dict[str, str]]):
+    output = {}
+    features_converted, feature_list = convert_features_dict_to_list(features.features)
+
+    if not features_converted:
+        return False, None
+
+    for (model_name, [model, accuracy, model_desc]) in ensemble_models.items():
+        prediction = model.predict([feature_list])
+        #model_output = {"model_name": model_name, "accuracy": accuracy, "model_description": model_desc, "prediction":prediction}
+        #output.append(model_output)
+        output[model_name] = prediction
+
+    return True, output
 
 
-def predict(features: PredictRequest) -> int:
-    pass
+def convert_features_dict_to_list(features:Dict[str, float]) -> (bool, List[float]):
+    output = []
+    for feature_name in feature_names:
+        if feature_name not in features:
+            return False, None
+        output.append(features[feature_name])
+    return True, output
+
+load_ensemble_models()

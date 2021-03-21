@@ -2,7 +2,7 @@ from sklearn import tree
 from sklearn.metrics import accuracy_score
 import numpy as np
 from numpy.typing import ArrayLike
-import save_model
+import train.save_model
 
 
 class DecisionTree:
@@ -16,23 +16,22 @@ class DecisionTree:
         for criterion in DecisionTree.get_criteria():
             self.models.append(tree.DecisionTreeClassifier(criterion=criterion))
 
-    def train(self, x_train, x_test, y_train, y_test, top_10_classifiers: ArrayLike) -> ArrayLike:
-        top_10_accuracies = np.array(top_10_classifiers[:, 0], dtype=float)
+    def train(self, x_train, x_test, y_train, y_test) -> ArrayLike:
+        best_model = None
+
         for i, clf in enumerate(self.models):
             clf.fit(x_train, y_train)
             predicted = clf.predict(x_test)
             accuracy = accuracy_score(y_test, predicted)
-            print("Model:{0}, Criterion:{1}, Accuracy:{2}".format("DecisionTreeClassifier",
+            desc = "Model:{0}, Criterion:{1}, Accuracy:{2}".format("DecisionTreeClassifier",
                                                                   DecisionTree.get_criteria()[i],
-                                                                  accuracy))
-            if accuracy > np.amin(top_10_accuracies):
-                model_filename = save_model.save_model(clf)
-                index = np.argmin(top_10_accuracies)
-                top_10_accuracies[index] = accuracy
-                top_10_classifiers[index] = [
-                    accuracy,
-                    "Model:{0}, Criterion:{1}, Accuracy:{2}".format("DecisionTreeClassifier",
-                                                                    DecisionTree.get_criteria()[i], accuracy),
-                    model_filename
-                ]
-        return top_10_classifiers
+                                                                  accuracy)
+            print(desc)
+
+            if best_model is None:
+                best_model = [clf, accuracy, desc]
+            elif accuracy > float(best_model[1]):
+                best_model = [clf, accuracy, desc]
+
+        print("Best Model: {0}".format(best_model))
+        return best_model
