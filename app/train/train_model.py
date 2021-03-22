@@ -3,11 +3,11 @@ import os
 from sklearn.model_selection import train_test_split
 import pandas as pd
 from numpy.typing import ArrayLike
-from train.svm import SVMClassifier
-from train.decision_tree import DecisionTree
-from train.neural_network import NeuralNetwork
-from app.data_structures import ModelName
-from train import save_model
+from .svm import SVMClassifier
+from .decision_tree import DecisionTree
+from .neural_network import NeuralNetwork
+from .train_data_structures import ModelName
+from . import save_model
 
 
 def load_data_from_csv(file: str) -> (ArrayLike, ArrayLike):

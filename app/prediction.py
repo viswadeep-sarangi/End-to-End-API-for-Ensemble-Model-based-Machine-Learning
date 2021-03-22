@@ -1,9 +1,8 @@
 import numpy as np
 import os
-from numpy.typing import ArrayLike
-from typing import Any, List, Dict
+from typing import List, Dict
 from sklearn.base import ClassifierMixin
-from app.data_structures import PredictRequest
+from data_structures import PredictRequest
 from train import save_model, train_model
 
 global ensemble_models
@@ -11,11 +10,11 @@ global ensemble_models
 feature_names = ['age','anaemia','creatinine_phosphokinase','diabetes','ejection_fraction','high_blood_pressure','platelets','serum_creatinine','serum_sodium','sex','smoking','time']
 
 
-def load_ensemble_models(base_path='./models/', filename='ensemble_models'):
+def load_ensemble_models():
     models_file = save_model.load_ensemble_models_file()
 
     if models_file is None:
-        train_model.train_all_models('../training_data/heart_failure_clinical_records_dataset.csv')
+        train_model.train_all_models('./training_data/heart_failure_clinical_records_dataset.csv')
         models_file = save_model.load_ensemble_models_file()
 
     print("Models:{0}".format(models_file))

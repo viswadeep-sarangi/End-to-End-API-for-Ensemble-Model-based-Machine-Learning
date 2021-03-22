@@ -3,10 +3,11 @@ from fastapi.responses import FileResponse
 from typing import Optional
 import uvicorn
 import os
-from app import training
-from app.data_structures import ModelResponse, PredictRequest, ModelName, TrainResponse, TrainRequest
+import training
+from data_structures import ModelResponse, PredictRequest, TrainResponse
+from train.train_data_structures import ModelName
 from train import save_model
-import app.prediction as pred
+import prediction as pred
 
 app = FastAPI()
 

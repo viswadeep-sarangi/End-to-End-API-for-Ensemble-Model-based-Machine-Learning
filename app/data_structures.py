@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from typing import Optional, List, Dict
-from enum import Enum
 from fastapi import UploadFile, File
 
 
@@ -24,9 +23,3 @@ class TrainResponse(BaseModel):
     unique_model_name: Optional[str]
     details: Optional[str]
     error: Optional[str]
-
-
-class ModelName(str, Enum):
-    svm = "svm"
-    decisiontree = "decisiontree"
-    neuralnetwork = "neuralnetwork"

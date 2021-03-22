@@ -1,11 +1,11 @@
 import csv
 import string
-from app.data_structures import TrainRequest, TrainResponse, ModelName
+from train.train_data_structures import ModelName
 from train import train_model, save_model
 from numpy.typing import ArrayLike
-from app import prediction
+import prediction
 
-base_address = "../training_data"
+base_address = "./training_data"
 
 
 def train_specific_model(data_file: str, model_name: ModelName) -> (bool, ArrayLike):
