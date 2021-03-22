@@ -1,7 +1,6 @@
 import pickle
 import os
 import uuid
-from numpy.typing import ArrayLike
 from typing import Dict
 import numpy as np
 from app.data_structures import ModelName

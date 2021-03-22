@@ -1,8 +1,6 @@
 from sklearn import svm
 from sklearn.metrics import accuracy_score
-import numpy as np
 from numpy.typing import ArrayLike
-import train.save_model
 
 
 class SVMClassifier:

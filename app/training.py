@@ -1,21 +1,21 @@
 import csv
 import string
-from data_structures import TrainRequest, TrainResponse, ModelName
+from app.data_structures import TrainRequest, TrainResponse, ModelName
 from train import train_model, save_model
 from numpy.typing import ArrayLike
-import prediction
+from app import prediction
 
-base_address = "./training_data"
+base_address = "../training_data"
 
 
-def train_specific_model(data_file: str, model_name: ModelName) -> ArrayLike:
+def train_specific_model(data_file: str, model_name: ModelName) -> (bool, ArrayLike):
     if not validate_csv(data_file):
-        return
+        return False, [None, None, None]
     trained_model = train_model.train_model(model_name=model_name, file=data_file)
     model_filename = save_model.save_model_uuid(trained_model)
     save_model.update_specific_ensemble_model(model_name=model_name, model_filename=model_filename)
     prediction.load_ensemble_models()
-    return [model_filename, *trained_model[1:]]
+    return True, [model_filename, *trained_model[1:]]
 
 
 def validate_csv(filename: str) -> bool:

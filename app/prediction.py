@@ -3,18 +3,19 @@ import os
 from numpy.typing import ArrayLike
 from typing import Any, List, Dict
 from sklearn.base import ClassifierMixin
-from api import PredictRequest
+from app.data_structures import PredictRequest
 from train import save_model, train_model
 
 global ensemble_models
 
 feature_names = ['age','anaemia','creatinine_phosphokinase','diabetes','ejection_fraction','high_blood_pressure','platelets','serum_creatinine','serum_sodium','sex','smoking','time']
 
+
 def load_ensemble_models(base_path='./models/', filename='ensemble_models'):
     models_file = save_model.load_ensemble_models_file()
 
     if models_file is None:
-        train_model.train_all_models('./heart_failure_clinical_records_dataset.csv')
+        train_model.train_all_models('../training_data/heart_failure_clinical_records_dataset.csv')
         models_file = save_model.load_ensemble_models_file()
 
     print("Models:{0}".format(models_file))
@@ -46,8 +47,6 @@ def predict(features: PredictRequest) -> (bool, List[Dict[str, str]]):
 
     for (model_name, [model, accuracy, model_desc]) in ensemble_models.items():
         prediction = model.predict([feature_list])
-        #model_output = {"model_name": model_name, "accuracy": accuracy, "model_description": model_desc, "prediction":prediction}
-        #output.append(model_output)
         output[model_name] = prediction
 
     return True, output

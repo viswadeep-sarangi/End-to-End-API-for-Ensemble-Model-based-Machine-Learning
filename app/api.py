@@ -1,12 +1,12 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
 from typing import Optional
 import uvicorn
 import os
-import training
-from data_structures import ModelResponse, PredictRequest, ModelName, TrainResponse, TrainRequest
+from app import training
+from app.data_structures import ModelResponse, PredictRequest, ModelName, TrainResponse, TrainRequest
 from train import save_model
-import prediction as pred
+import app.prediction as pred
 
 app = FastAPI()
 
@@ -33,30 +33,45 @@ async def get_model_predictions(request: PredictRequest) -> ModelResponse:
 
     prediction_valid, model_prediction = pred.predict(request)
     if prediction_valid:
-        return ModelResponse(predictions=[model_prediction], error="Success")
+        return ModelResponse(predictions=[model_prediction])
     else:
-        return ModelResponse(error="Error in getting prediction from the models")
+        return ModelResponse(error="Error in getting prediction from the models. Please check the JSON data again")
 
 
-@app.post("/train")
-async def train_model(model_name: ModelName, data: UploadFile = File(...),
-                      save_model: Optional[bool] = False) -> TrainResponse:
+@app.get("/train")
+async def explain_api_train():
+    raise HTTPException(status_code=400,
+                        detail="Send a POST request to this endpoint with 'model_name' (svm, decisiontree or neuralnetwork) and 'csv_data_file' data with a 'save_model_to_disk' option")
+
+
+@app.post("/train", response_model=TrainResponse)
+async def train_model(model_name: ModelName, csv_data_file: UploadFile = File(...),
+                      save_model_to_disk: Optional[bool] = False) -> TrainResponse:
     if not os.path.exists(training.base_address):
         os.mkdir(training.base_address)
 
-    contents = await data.read()
+    contents = await csv_data_file.read()
 
-    f = open(os.path.join(training.base_address, data.filename), "wb")
+    f = open(os.path.join(training.base_address, csv_data_file.filename), "wb")
     f.write(contents)
     f.close()
 
-    [model_filename, accuracy, model_desc] = training.train_specific_model(f.name, model_name)
+    csv_valid, [model_filename, accuracy, model_desc] = training.train_specific_model(f.name, model_name)
 
-    if save_model:
+    if not csv_valid:
+        return TrainResponse(error="Error in parsing the .csv file. Please make sure its valid")
+
+    if save_model_to_disk:
         return TrainResponse(accuracy=str(float(accuracy) * 100) + "%", unique_model_name=model_filename,
                              details="{0}. Call the /downloadmodel API endpoint with the unique_model_name to save the model to disk".format(model_desc))
     else:
         return TrainResponse(accuracy=str(float(accuracy) * 100) + "%")
+
+
+@app.get("/downloadmodel")
+async def explain_api_downloadmodel():
+    raise HTTPException(status_code=400,
+                        detail="Send a POST request to this endpoint with 'unique_model_name' of the previously trained model")
 
 
 @app.post("/downloadmodel")

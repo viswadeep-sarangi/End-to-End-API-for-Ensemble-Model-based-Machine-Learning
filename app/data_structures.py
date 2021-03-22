@@ -20,9 +20,10 @@ class TrainRequest(BaseModel):
 
 
 class TrainResponse(BaseModel):
-    accuracy: str
+    accuracy: Optional[str]
     unique_model_name: Optional[str]
     details: Optional[str]
+    error: Optional[str]
 
 
 class ModelName(str, Enum):

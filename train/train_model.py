@@ -1,3 +1,5 @@
+import os
+
 from sklearn.model_selection import train_test_split
 import pandas as pd
 from numpy.typing import ArrayLike
@@ -35,6 +37,8 @@ def train_model(model_name: ModelName, file: str, test_size=0.15):
 
 
 def train_all_models(filename: str, test_size=0.15):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    print("Current Directory: {0}".format(dir_path))
     data, target = load_data_from_csv(filename)
     print(data)
     print(target)
