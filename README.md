@@ -197,7 +197,7 @@ To run the API service locally, without having to go through Docker, please exec
 pip install -r requirements.txt 
 ```
 - Once all the required packages are installed, the server is ready to be run
-- Navigate to the `/app` directory in the clone repository, and execute the following command in the terminal:
+- Navigate to the `/app` directory in the clone repository (using `cd app`), and execute the following command in the terminal:
 ```sh
 python api.py
 ```
