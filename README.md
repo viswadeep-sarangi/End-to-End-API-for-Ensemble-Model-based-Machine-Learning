@@ -7,7 +7,7 @@ This project is an end-to-end machine learning (ML) model API based on the [UCI 
 - Neural Networks (`neuralnetwork`)
 
 ## Quick Start (with Docker)
------------------------------------------
+
 - Clone the git repository
 - Navigate into the cloned directory using the terminal
 - Ensure [docker](https://www.docker.com/) is installed 
@@ -23,7 +23,7 @@ docker run -d --name viswadeep_uci_heart_failure_prediction_container -p 8000:80
 - Visit [http://localhost:8000/docs](http://localhost:8000/docs) to see the list of API calls available
 
 ## Quick Testing the API
--------------------------------
+
 The [http://localhost:8000/docs](http://localhost:8000/docs) is a very intuitive way of understanding the nature of the API calls to be made to the service, including providing details about the `curl` commands that can be invoked to test it. 
 
 Here's a few `curl` commands for quick reference:
@@ -165,7 +165,7 @@ curl -X 'GET' \
 
 
 ## Dev Environment
------------------
+
 The development was done using the  [PyCharm](https://www.jetbrains.com/pycharm/) IDE, using [Python 3.7](https://www.python.org/downloads/release/python-370/) as the language of choice.
 The [requirements.txt](https://github.com/viswadeep-sarangi/uci-heart-failure-ensemble-models-api/blob/main/requirements.txt) file in this repository includes all the Python packages used, along with their versions. 
 
@@ -184,7 +184,7 @@ For quick reference, the following packages were used for development:
 | pytest | 6.2.2 |
 
 ## Running the server manually (without Docker)
-----------------
+
 
 To run the API service locally, without having to go through Docker, please execute the following instructions:
 - Clone the git repository to a local directory
@@ -205,7 +205,7 @@ python api.py
 - The above mentioned `curl` commands can now be used the same way 
 
 ## Motivation of the ML architecture
----------------
+
 The API as well as the ML architecture was developed to ensure optimum modularity of code. Each ML model is housed in a separate class. However all the classes share the same structure for ease of compatibility with the rest of the project structure.
 
 The ML model classes are defined in a way such that:
