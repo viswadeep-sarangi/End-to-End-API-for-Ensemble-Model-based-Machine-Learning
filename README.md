@@ -5,6 +5,7 @@ This project is an end-to-end machine learning (ML) model API based on the [UCI 
 - Supprt Vector Machines (`svm`)
 - Decision Trees (`decisiontree`)
 - Neural Networks (`neuralnetwork`) 
+
 The project is ready for deployment either on the local computer or on the cloud using services such as Amazon Web Services (AWS), Microsoft Azure or Google Cloud Platform (GCP)
 
 # Table of Contents
