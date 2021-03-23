@@ -1,4 +1,4 @@
-# End to End API for Machine Learning
+# End to End API for Ensemble Model based Machine Learning
 ##### @author: Viswadeep Sarangi
 
 This project is an end-to-end machine learning (ML) model API based on the [UCI Heart Failure Dataset](https://archive.ics.uci.edu/ml/datasets/Heart+failure+clinical+records) with training, saving and predicting capabilities using 3 different ML algorithms, namely:
