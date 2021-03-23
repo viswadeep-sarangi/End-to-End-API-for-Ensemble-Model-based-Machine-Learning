@@ -60,13 +60,13 @@ This returns a basic response body like:
 ----------
 There are 3 different ML models that can be trained using this API call, by
 - Specifying the name of the ML model to be trained `model_name`, which can be either of 
--- `svm` (Support Vector Machine)
--- `decisiontree` (Decision Tree)
--- `neuralnetwork` (Neural Network)
+	* `svm` (Support Vector Machine)
+	* `decisiontree` (Decision Tree)
+	* `neuralnetwork` (Neural Network)
 - Providing a .csv file containing the training data in the prescribed format
--- The prescription of the .csv file can be referred to at [UCI Heart Failure Dataset](https://archive.ics.uci.edu/ml/datasets/Heart+failure+clinical+records)
+	* The prescription of the .csv file can be referred to at [UCI Heart Failure Dataset](https://archive.ics.uci.edu/ml/datasets/Heart+failure+clinical+records)
 - Providing an optional parameter of saving the trained model to the local disk, `save_model_to_disk`
--- If set to `true`, this API call returns a unique name of the trained model, which can be used to download the model using the `/downloadmodel` API endpoint
+	* If set to `true`, this API call returns a unique name of the trained model, which can be used to download the model using the `/downloadmodel` API endpoint
 
 The following `curl` command illustrates an example of making this API call
 ```sh
@@ -204,7 +204,7 @@ To run the API service locally, without having to go through Docker, please exec
 - Clone the git repository to a local directory
 - Navigate to the cloned directory using the terminal
 - Ensure `Python 3.7` and `pip` are installed on the local computer and are accessible thorugh the terminal
--- Ensure executing `python --version` and `pip --version` does not return an error
+	* Ensure executing `python --version` and `pip --version` does not return an error
 - Upgrade `pip` using the command `pip install --upgrade pip` in the terminal
 - Once, the above steps are complete, install all the dependencies of the repository using the command:
 ```sh 
