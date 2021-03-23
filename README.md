@@ -4,10 +4,22 @@
 This project is an end-to-end machine learning (ML) model API based on the [UCI Heart Failure Dataset](https://archive.ics.uci.edu/ml/datasets/Heart+failure+clinical+records) with training, saving and predicting capabilities using 3 different ML algorithms, namely:
 - Supprt Vector Machines (`svm`)
 - Decision Trees (`decisiontree`)
-- Neural Networks (`neuralnetwork`)
+- Neural Networks (`neuralnetwork`) 
 
-## Quick Start (with Docker)
+# Table of Contents
+-----------------
+1. [Quick Start (with Docker)](#quick-start-with-docker)
+2. [Quick Testing the API](#quick-testing-the-api)
+    * [Basic Root API](#basic-root-api)
+    * [Train API](#train-api)
+    * [Saving Model API](#saving-model-api)
+    * [Predict API](#predict-api)
+3. [Dev Environment](#dev-environment)
+4. [Running the Server Manually (without Docker)](#running-the-server-manually-without-docker)
+5. [Motivation of the ML Architecture](#motivation-of-the-ml-architecture)
 
+## Quick Start (with Docker) <div id='quick-start-with-docker'/>
+-----------------------------------------
 - Clone the git repository
 - Navigate into the cloned directory using the terminal
 - Ensure [docker](https://www.docker.com/) is installed 
@@ -22,12 +34,12 @@ docker run -d --name viswadeep_uci_heart_failure_prediction_container -p 8000:80
 - The API can now be accessed at [http://localhost:8000](http://localhost:8000)
 - Visit [http://localhost:8000/docs](http://localhost:8000/docs) to see the list of API calls available
 
-## Quick Testing the API
-
+## Quick Testing the API <div id='quick-testing-the-api'/>
+-------------------------------
 The [http://localhost:8000/docs](http://localhost:8000/docs) is a very intuitive way of understanding the nature of the API calls to be made to the service, including providing details about the `curl` commands that can be invoked to test it. 
 
 Here's a few `curl` commands for quick reference:
-#### Basic root API
+#### Basic root API <div id='basic-root-api'/>
 -----------------
 ```sh
 curl -X 'GET' \
@@ -42,7 +54,7 @@ This returns a basic response body like:
 }
 ```
 
-#### Train API
+#### Train API <div id='train-api'/>
 ----------
 There are 3 different ML models that can be trained using this API call, by
 - Specifying the name of the ML model to be trained `model_name`, which can be either of 
@@ -87,7 +99,7 @@ curl -X 'GET' \
 }
 ```
 
-#### Saving Model API
+#### Saving Model API <div id='saving-model-api'/>
 --------------
 A pre-trained model can be downloaded to save to the local disk with the following terminal command
 ```sh
@@ -112,7 +124,7 @@ curl -X 'GET' \
 }
 ```
 
-#### Predict API
+#### Predict API <div id='predict-api'/>
 ---------
 ```sh
 curl -X 'POST' \
@@ -164,8 +176,8 @@ curl -X 'GET' \
 ```
 
 
-## Dev Environment
-
+## Dev Environment <div id='dev-environment'/>
+-----------------
 The development was done using the  [PyCharm](https://www.jetbrains.com/pycharm/) IDE, using [Python 3.7](https://www.python.org/downloads/release/python-370/) as the language of choice.
 The [requirements.txt](https://github.com/viswadeep-sarangi/uci-heart-failure-ensemble-models-api/blob/main/requirements.txt) file in this repository includes all the Python packages used, along with their versions. 
 
@@ -183,8 +195,8 @@ For quick reference, the following packages were used for development:
 | aiofiles | 0.6.0 |
 | pytest | 6.2.2 |
 
-## Running the server manually (without Docker)
-
+## Running the server manually (without Docker) <div id = 'running-the-server-manually-without-docker'/>
+----------------
 
 To run the API service locally, without having to go through Docker, please execute the following instructions:
 - Clone the git repository to a local directory
@@ -197,15 +209,15 @@ To run the API service locally, without having to go through Docker, please exec
 pip install -r requirements.txt 
 ```
 - Once all the required packages are installed, the server is ready to be run
-- Navigate to the `/app` directory in the clone repository (using `cd app`), and execute the following command in the terminal:
+- Navigate to the `/app` directory in the clone repository, and execute the following command in the terminal:
 ```sh
 python api.py
 ```
 - This should run the server at [http://localhost:8000](http://localhost:8000)
 - The above mentioned `curl` commands can now be used the same way 
 
-## Motivation of the ML architecture
-
+## Motivation of the ML architecture <div id='motivation-of-the-ml-architecture'/>
+---------------
 The API as well as the ML architecture was developed to ensure optimum modularity of code. Each ML model is housed in a separate class. However all the classes share the same structure for ease of compatibility with the rest of the project structure.
 
 The ML model classes are defined in a way such that:
