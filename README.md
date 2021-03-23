@@ -1,10 +1,11 @@
-# UCI Heart Failure Prediction API
+# End to End API for Machine Learning
 ##### @author: Viswadeep Sarangi
 
 This project is an end-to-end machine learning (ML) model API based on the [UCI Heart Failure Dataset](https://archive.ics.uci.edu/ml/datasets/Heart+failure+clinical+records) with training, saving and predicting capabilities using 3 different ML algorithms, namely:
 - Supprt Vector Machines (`svm`)
 - Decision Trees (`decisiontree`)
 - Neural Networks (`neuralnetwork`) 
+The project is ready for deployment either on the local computer or on the cloud using services such as Amazon Web Services (AWS), Microsoft Azure or Google Cloud Platform (GCP)
 
 # Table of Contents
 -----------------
