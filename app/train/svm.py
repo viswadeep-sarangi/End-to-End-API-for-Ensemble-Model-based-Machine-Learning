@@ -7,6 +7,10 @@ class SVMClassifier:
 
     @staticmethod
     def get_kernels():
+        """
+        Various kernel functions used for training the model
+        :return: a list of strings, containing the kernel function names
+        """
         return ['linear', 'rbf']
 
     def __init__(self):
@@ -15,6 +19,14 @@ class SVMClassifier:
             self.models.append(svm.SVC(kernel=kernel, gamma=2))
 
     def train(self, x_train, x_test, y_train, y_test) -> ArrayLike:
+        """
+        Trains the model based on the parameters
+        :param x_train: Training dataset
+        :param x_test: Testing dataset
+        :param y_train: Training labels
+        :param y_test: Testing labels
+        :return: an array of [ sklearn model, the accuracy of the model on the training set, verbal description of the model ]
+        """
         best_model = None
 
         for i, clf in enumerate(self.models):

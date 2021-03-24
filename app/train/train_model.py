@@ -11,6 +11,11 @@ from . import save_model
 
 
 def load_data_from_csv(file: str) -> (ArrayLike, ArrayLike):
+    """
+    Loads the csv file and returns the contents segregated into features and target. Target is taken as the 'DEATH_EVENT' column in the .csv file provided
+    :param file: The filepath of the .csv path to be used for extracting the features and targets
+    :return: Two numpy arrays, first one containing the features, and another containing the targets (or labels)
+    """
     data = pd.read_csv(file)
     target = data.pop('DEATH_EVENT').values
     print(type(data.to_numpy()))
@@ -19,6 +24,13 @@ def load_data_from_csv(file: str) -> (ArrayLike, ArrayLike):
 
 
 def train_model(model_name: ModelName, file: str, test_size=0.15):
+    """
+    Trains the models (svm, decision trees or neural networks) based on the model name provided
+    :param model_name: Name (or type) of the model. Can be either of 'svm', 'decisiontree' or 'neuralnetwork'
+    :param file: The source .csv file which will be used for training the model specified
+    :param test_size: The fraction used for determining the split between training and testing dataset sizes. Defaults to 0.15
+    :return: A list of [ the trained model, accuracy of the trained model on the test set, verbal description of the model for ease of understanding ]
+    """
     data, target = load_data_from_csv(file=file)
 
     if model_name == ModelName.svm:
@@ -37,6 +49,12 @@ def train_model(model_name: ModelName, file: str, test_size=0.15):
 
 
 def train_all_models(filename: str, test_size=0.15):
+    """
+    Called in case the models are not found in the appropriate directory. Trains the whole ensemble of models to be used for prediction
+    :param filename: Name (and path) of the .csv file to be used for training all the models
+    :param test_size: The fraction used for determining the split between training and testing dataset sizes. Defaults to 0.15
+    :return: None
+    """
     dir_path = os.path.dirname(os.path.realpath(__file__))
     print("Current Directory: {0}".format(dir_path))
     data, target = load_data_from_csv(filename)

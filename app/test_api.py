@@ -1,8 +1,14 @@
 from fastapi.testclient import TestClient
 import api
 
+"""
+Basic pytest based testing file for ensuring any changes to the API endpoint, successfully pass
+Can be executed by exectuting '$pytest' on the terminal that is pointing to the 'app' directory
+"""
+
 client = TestClient(api.app)
 
+# An example JSON file to be used for testing purposes
 sample_json_for_prediction = {
     "features": {
         "age": 75,
